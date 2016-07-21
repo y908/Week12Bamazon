@@ -1,13 +1,14 @@
 //INITIALIZES THE NPM PACKAGES USED//
 var mysql = require('mysql');
 var inquirer = require('inquirer');
+var Pass = require('./word');
 
 //INITIALIZES THE CONNECTION VARIABLE TO SYNC WITH A MYSQL DATABASE//
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root", //Your username//
-    password: "", //Your password//
+    password: Pass.password, //Your password//
     database: "Bamazon"
 })
 
