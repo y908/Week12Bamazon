@@ -27,7 +27,7 @@ var makeTable = function() {
         if (err) throw err;
         //PRINTS THE TABLE TO THE CONSOLE WITH MINIMAL STYLING//
         var tab = "\t";
-        console.log("ItemID\tProduct Name\tDepartment Name\tPrice\t# In Stock");
+        console.log("ItemID\tName\tDept\tPrice\t# In Stock");
         console.log("--------------------------------------------------------");
         //FOR LOOP GOES THROUGH THE MYSQL TABLE AND PRINTS EACH INDIVIDUAL ROW ON A NEW LINE//
         for (var i = 0; i < res.length; i++) {
