@@ -2,9 +2,9 @@
 var mysql = require('mysql');
 var inquirer = require('inquirer');
 var Pass = require('./word');
-var izz = 0;
-var temp111 = 0;
-var temp222 = 0;
+var requestedItem = 0; 
+var requestdItemId = 0;
+var sumAfterUpdate = 0;
 //INITIALIZES THE CONNECTION VARIABLE TO SYNC WITH A MYSQL DATABASE//
 var connection = mysql.createConnection({
     host: "localhost",
@@ -45,7 +45,7 @@ var updateQuantity = function(){
 
     console.log("update Function running");
 
-    connection.query('UPDATE products SET StockQuantity = ' + temp222 + ' WHERE ItemID = ' + temp111 + '', function(err, res){
+    connection.query('UPDATE products SET StockQuantity = ' + sumAfterUpdate + ' WHERE ItemID = ' + requestdItemId + '', function(err, res){
 
     });
 
@@ -72,9 +72,9 @@ var promptCustomer = function(res) {
                         correct = true;
 
                         console.log('Great, there are ' + res[i].StockQuantity + ' available!' );
-                        izz = res[i].StockQuantity;
+                        requestedItem = res[i].StockQuantity;
 
-                            temp111 = res[i].ItemID;
+                            requestdItemId = res[i].ItemID;
 
 
                            inquirer.prompt([{
@@ -83,9 +83,9 @@ var promptCustomer = function(res) {
                                 message: 'How many would you like to buy?'
                             }]).then(function(val2) {                             
                               
-                                if(val2.choice2 <= izz){
+                                if(val2.choice2 <= requestedItem){
                                     console.log('Fantastic! Enjoy this item!');
-                                    temp222 = izz - val2.choice2;  
+                                    sumAfterUpdate = requestedItem - val2.choice2;  
                                     updateQuantity();
                                     
                                 }else{ 
