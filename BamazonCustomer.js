@@ -2,7 +2,7 @@
 var mysql = require('mysql');
 var inquirer = require('inquirer');
 var Pass = require('./word');
-
+var izz = 0;
 //INITIALIZES THE CONNECTION VARIABLE TO SYNC WITH A MYSQL DATABASE//
 var connection = mysql.createConnection({
     host: "localhost",
@@ -50,8 +50,31 @@ var promptCustomer = function(res) {
 
                 //SET THE VAR correct TO FALSE SO AS TO MAKE SURE THE USER INPUTS A VALID PRODUCT NAME//
                 var correct = false;
+           
                 //LOOPS THROUGH THE MYSQL TABLE TO CHECK THAT THE PRODUCT THEY WANTED EXISTS//
-                for (var i = 0; i < res.length; i++) {                      
+                for (var i = 0; i < res.length; i++) {
+                    if(val.choice == res[i].ProductName){
+                        correct = true;
+
+                        console.log('Great, there are ' + res[i].StockQuantity + ' available!' );
+                        izz = res[i].StockQuantity;
+
+                           inquirer.prompt([{
+                                type: 'input',
+                                name: 'choice2',
+                                message: 'How many would you like to buy?'
+                            }]).then(function(val2) {                             
+                              
+                                if(val2.choice2 <= izz){
+                                    console.log('Fantastic! Enjoy this item!');
+                                    promptCustomer(res);
+                                }else{ 
+                                    console.log('Sorry, we do not have enough of this item.');
+                                    promptCustomer(res);
+                                }
+
+                    });   
+                    }
                   //1. TODO: IF THE PRODUCT EXISTS, SET correct = true and ASK THE USER TO SEE HOW MANY OF THE PRODUCT THEY WOULD LIKE TO BUY//
                   //2. TODO: CHECK TO SEE IF THE AMOUNT REQUESTED IS LESS THAN THE AMOUNT THAT IS AVAILABLE//                       
                   //3. TODO: UPDATE THE MYSQL TO REDUCE THE StockQuanaity by the THE AMOUNT REQUESTED  - UPDATE COMMAND!
@@ -59,7 +82,7 @@ var promptCustomer = function(res) {
                 }
 
                 //IF THE PRODUCT REQUESTED DOES NOT EXIST, RESTARTS PROMPT//
-                if (i == res.length && correct == false) {
+              if (i == res.length && correct == false) {
                     promptCustomer(res);
                 }
             });
